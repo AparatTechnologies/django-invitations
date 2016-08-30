@@ -24,9 +24,10 @@ class SendInvite(LoginRequiredMixin, FormView):
 
     def form_valid(self, form):
         email = form.cleaned_data["email"]
+        message = form.cleaned_data["message"]
 
         try:
-            invite = form.save(email)
+            invite = form.save(email, message)
             invite.inviter = self.request.user
             invite.save()
             invite.send_invitation(self.request)

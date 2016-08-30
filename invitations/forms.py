@@ -50,8 +50,10 @@ class InviteForm(forms.Form, CleanEmailMixin):
         required=True,
         widget=forms.TextInput(attrs={"type": "email", "size": "30"}))
 
-    def save(self, email):
-        return Invitation.create(email=email)
+    message = forms.CharField(widget=forms.Textarea(), required=False)
+
+    def save(self, email, message):
+        return Invitation.create(email, message=message)
 
 
 class InvitationAdminAddForm(forms.ModelForm, CleanEmailMixin):

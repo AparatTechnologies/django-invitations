@@ -27,13 +27,16 @@ class Invitation(models.Model):
     inviter = models.ForeignKey(
         settings.AUTH_USER_MODEL, null=True, blank=True)
 
+    message = models.TextField(null=True, blank=True)
+
     objects = InvitationManager()
 
     @classmethod
-    def create(cls, email, inviter=None):
+    def create(cls, email, message='', inviter=None):
         key = get_random_string(64).lower()
         instance = cls._default_manager.create(
             email=email,
+            message=message,
             key=key,
             inviter=inviter)
         return instance
@@ -57,6 +60,7 @@ class Invitation(models.Model):
             'email': self.email,
             'key': self.key,
             'inviter': self.inviter,
+            'invite': self
         }
 
         email_template = 'invitations/email/email_invite'
